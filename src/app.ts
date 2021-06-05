@@ -1,10 +1,21 @@
 import express from 'express';
+import bodyParser from 'body-parser';
+
+import coaches from './routes/coaches';
 
 const app = express();
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 8080;
+
+app.use(bodyParser.urlencoded({
+  extended: true,
+}));
+
+app.use(bodyParser.json());
+
+app.use('/coaches', coaches);
 
 app.listen(port, () => {
   console.log(`listening on http://localhost:${port}`);
-}).on('error', (err) => {
+}).on('error', (err: Error) => {
   console.log(err);
 });
