@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-import coachSchema from './schemas/coach.schema';
 import requestSchema from './schemas/request.schema';
 import configs from '../config';
 
@@ -20,5 +19,4 @@ export const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('connected', () => console.log('Connection Successful'));
 
-export const Coach = mongoose.model('Coach', coachSchema);
 export const Request = mongoose.model('Request', requestSchema);

@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import { db } from './models/db';
 
 import coaches from './routes/coaches';
 
@@ -19,3 +20,5 @@ app.listen(port, () => {
 }).on('error', (err: Error) => {
   console.log(err);
 });
+
+console.log(db);
