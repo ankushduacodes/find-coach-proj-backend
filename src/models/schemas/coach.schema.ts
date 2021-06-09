@@ -1,11 +1,11 @@
 import { Schema, model } from 'mongoose';
 
-interface IContactInfo {
+declare interface IContactInfo {
   phone: string,
   email: string
 }
 
-interface ICoach {
+declare interface ICoach {
   name: string,
   id: number,
   age: number,
@@ -16,7 +16,7 @@ interface ICoach {
 const possibleExpertise = ['backend', 'frontend', 'database'];
 const possibleContactInfoKeys = ['phone', 'email'];
 
-function checker(arr: boolean[]) {
+function valueValidityCheck(arr: boolean[]) {
   return arr.every(Boolean);
 }
 
@@ -29,6 +29,7 @@ const coachSchema = new Schema({
   id: {
     type: Number,
     required: true,
+    default: Math.floor(Math.random() * 1000000000) + 1000,
   },
   age: {
     type: Number,
@@ -39,15 +40,16 @@ const coachSchema = new Schema({
     required: true,
     validate: [
       {
-        validator: function lengthCheck(val: Array<string>) {
+        validator: function lengthValidator(val: Array<string>) {
           return val.length <= 3 && val.length > 0;
         },
         message: (props) => `${props.value} is not valid`,
       },
       {
-        validator: function valueCheck(valArr: Array<string>) {
-          const boolArr = valArr.map((val) => possibleExpertise.includes(val.toLowerCase()));
-          return checker(boolArr);
+        validator: function valueValidator(valArr: Array<string>) {
+          // One of the ways to check for valid values
+          const boolArr = valArr.filter((val) => possibleExpertise.includes(val.toLowerCase()));
+          return boolArr.length === valArr.length;
         },
         message: (props) => `${props.value} is not valid`,
       },
@@ -58,17 +60,18 @@ const coachSchema = new Schema({
     required: true,
     validate: [
       {
-        validator: function lengthCheck(valObj: IContactInfo) {
+        validator: function lengthValidator(valObj: IContactInfo) {
           return Object.keys(valObj).length === 2;
         },
         message: (props) => `${props.value} needs to have both phone and email`,
       },
       {
-        validator: function objectKeyCheck(valObj: IContactInfo) {
+        validator: function objectKeysValidator(valObj: IContactInfo) {
+          // Second way of checking for valid values
           const boolArr = Object.keys(valObj).map(
             (val) => possibleContactInfoKeys.includes(val.toLowerCase()),
           );
-          return checker(boolArr);
+          return valueValidityCheck(boolArr);
         },
         message: (props) => `${props.value} is not valid`,
       },
