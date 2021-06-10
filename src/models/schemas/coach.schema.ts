@@ -28,7 +28,6 @@ const coachSchema = new Schema({
   },
   id: {
     type: Number,
-    required: true,
     default: Math.floor(Math.random() * 1000000000) + 1000,
   },
   age: {
@@ -48,8 +47,8 @@ const coachSchema = new Schema({
       {
         validator: function valueValidator(valArr: Array<string>) {
           // One of the ways to check for valid values
-          const boolArr = valArr.filter((val) => possibleExpertise.includes(val.toLowerCase()));
-          return boolArr.length === valArr.length;
+          const filteredArr = valArr.filter((val) => possibleExpertise.includes(val.toLowerCase()));
+          return filteredArr.length === valArr.length;
         },
         message: (props) => `${props.value} is not valid`,
       },
@@ -76,6 +75,9 @@ const coachSchema = new Schema({
         message: (props) => `${props.value} is not valid`,
       },
     ],
+  },
+  requestList: {
+    type: [Number],
   },
 });
 
