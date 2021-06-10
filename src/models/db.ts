@@ -1,6 +1,4 @@
 import mongoose from 'mongoose';
-
-import requestSchema from './schemas/request.schema';
 import configs from '../config';
 
 const username = configs.envs.parsed?.USERNAME || process.env.USERNAME;
@@ -14,9 +12,8 @@ mongoose.connect(mongoUri, {
   useCreateIndex: true,
 }, () => console.log('Connection success'));
 
+// eslint-disable-next-line import/prefer-default-export
 export const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('connected', () => console.log('Connection Successful'));
-
-export const Request = mongoose.model('Request', requestSchema);
