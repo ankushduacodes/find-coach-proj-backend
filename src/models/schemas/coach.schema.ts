@@ -29,7 +29,7 @@ const coachSchema = new Schema({
   },
   id: {
     type: Number,
-    default: Math.floor(Math.random() * 1000000000) + 1000,
+    required: true,
   },
   age: {
     type: Number,

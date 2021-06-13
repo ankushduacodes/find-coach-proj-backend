@@ -24,6 +24,7 @@ declare interface IContactInfo {
 declare interface ICoachObj {
   name: string,
   age: number,
+  id: number,
   expertise: Array<string>,
   contactInfo: IContactInfo,
 }
@@ -80,9 +81,11 @@ router.post(
       }
       return res.status(400).json({ message: 'Validation error occurred', error: errResponse });
     }
+    const coachId = Math.floor(Math.random() * 1000000000) + 1000;
     const newCoach: ICoachObj = {
       name,
       age,
+      id: coachId,
       expertise,
       contactInfo: {
         phone,
