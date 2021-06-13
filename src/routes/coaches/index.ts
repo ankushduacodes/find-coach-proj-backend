@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 // eslint-disable-next-line no-unused-vars
-import { validationResult } from 'express-validator';
+import {
+  validationResult,
+} from 'express-validator';
 import Coach from '../../models/schemas/coach.schema';
 import {
   nameValidator,
@@ -13,6 +15,18 @@ import {
 const express = require('express');
 
 const router = express.Router();
+
+declare interface IContactInfo {
+  phone: string,
+  email: string,
+}
+
+declare interface ICoachObj {
+  name: string,
+  age: number,
+  expertise: Array<string>,
+  contactInfo: IContactInfo,
+}
 
 router.get('/', async (req: Request, res: Response) => {
   let coachList;
@@ -66,7 +80,7 @@ router.post(
       }
       return res.status(400).json({ message: 'Validation error occurred', error: errResponse });
     }
-    const newCoach = {
+    const newCoach: ICoachObj = {
       name,
       age,
       expertise,
