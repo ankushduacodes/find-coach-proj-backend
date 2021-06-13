@@ -11,9 +11,10 @@ declare interface ICoach {
   age: number,
   expertise: Array<string>,
   contactInfo: IContactInfo,
+  requests?: Array<number>
 }
 
-const possibleExpertise = ['backend', 'frontend', 'database'];
+export const possibleExpertise = ['backend', 'frontend', 'database'];
 const possibleContactInfoKeys = ['phone', 'email'];
 
 function valueValidityCheck(arr: boolean[]) {
