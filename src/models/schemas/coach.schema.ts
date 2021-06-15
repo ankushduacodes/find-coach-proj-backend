@@ -5,7 +5,7 @@ declare interface IContactInfo {
   email: string
 }
 
-declare interface ICoach {
+export declare interface ICoach {
   name: string,
   id: number,
   age: number,
@@ -30,6 +30,7 @@ const coachSchema = new Schema({
   id: {
     type: Number,
     required: true,
+    index: true,
   },
   age: {
     type: Number,
@@ -79,6 +80,7 @@ const coachSchema = new Schema({
   },
   requestList: {
     type: [Number],
+    default: [],
   },
 });
 

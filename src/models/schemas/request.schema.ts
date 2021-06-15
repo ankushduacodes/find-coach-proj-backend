@@ -15,7 +15,8 @@ const requestSchema = new Schema({
   },
   id: {
     type: Number,
-    default: Math.floor(Math.random() * 1000000000) + 100000,
+    required: true,
+    index: true,
   },
   message: {
     type: String,
@@ -28,4 +29,4 @@ const requestSchema = new Schema({
   },
 });
 
-export default model<IRequest>('Request', requestSchema);
+export default model<IRequest>('CoachRequest', requestSchema);
