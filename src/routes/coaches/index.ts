@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 // eslint-disable-next-line no-unused-vars
 import {
   validationResult,
@@ -11,8 +11,6 @@ import {
   phoneNumberValidator,
   expertiseValidator,
 } from '../../validations/coachValidator';
-
-const express = require('express');
 
 const router = express.Router();
 
@@ -36,7 +34,7 @@ router.get('/', async (req: Request, res: Response) => {
   } catch (err) {
     return res.status(500).json({ message: 'Something went wrong, Please try again' });
   }
-  return res.status(204).json(coachList);
+  return res.status(200).json({ message: 'success', coachList });
 });
 
 router.get('/:coachId', async (req: Request, res: Response) => {
@@ -51,7 +49,7 @@ router.get('/:coachId', async (req: Request, res: Response) => {
   if (!coach) {
     return res.status(404).json({ message: 'No coach was found' });
   }
-  return res.status(200).json({ message: 'Coach Found', coach });
+  return res.status(200).json({ message: 'success', coach });
 });
 
 router.post(
