@@ -2,7 +2,8 @@ import { check, CustomValidator, ValidationChain } from 'express-validator';
 import { possibleExpertise } from '../models/schemas/coach.schema';
 
 const areValidExpertise: CustomValidator = (incomingDataArr: string[]) => {
-  const filteredArr = incomingDataArr.filter((val) => possibleExpertise.includes(val));
+  // eslint-disable-next-line max-len
+  const filteredArr = incomingDataArr.filter((val) => possibleExpertise.includes(val.toLowerCase()));
   if (!(filteredArr.length === incomingDataArr.length)) {
     throw new Error('Expertise values are not valid');
   }

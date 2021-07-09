@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
+import mongoose from 'mongoose';
 import { nameValidator } from '../../validations/coachValidator';
 import CoachRequest from '../../models/schemas/request.schema';
 import Coach from '../../models/schemas/coach.schema';
@@ -35,7 +36,7 @@ router.get('/:requestId', async (req: Request, res: Response) => {
 
 router.post('/add',
   nameValidator,
-  coachIdValidator,
+  // coachIdValidator,
   messageValidator,
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
@@ -56,30 +57,27 @@ router.post('/add',
       id: requestId,
     };
 
+    const session = await mongoose.startSession();
     let request;
-    try {
-      request = await new CoachRequest(newRequest).save();
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({ message: 'Something went wrong', err });
-    }
-
     let coach;
+    session.startTransaction();
     try {
-      coach = await Coach.findOne({ id: coachId });
+      coach = await Coach.findOne({ id: coachId }).session(session);
       if (!coach) {
         return res.status(500).json({ message: 'Something went wrong while informing the coach, Please try again' });
       }
+      request = await new CoachRequest(newRequest).save();
       // @ts-ignore
       coach.requestList.push(request.id);
       await coach.save();
+      await session.commitTransaction();
     } catch (err) {
+      await session.abortTransaction();
       console.log(err);
       return res.status(500).json({ message: 'Something went wrong while informing the coach, Please try again' });
+    } finally {
+      session.endSession();
     }
-
-    // Should I be checking if the coach is found here or not
-    // because I am checking it in the validator
     return res.json({ message: 'success', request });
   });
 
